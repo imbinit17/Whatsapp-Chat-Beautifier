@@ -123,6 +123,16 @@
             font-size: 20px;
             color: rgb(255, 255, 255);
             padding: 9px 8px;
+            padding-top: 2px;
+        }
+
+        .c_msg{
+            align-self: center;
+            color: #ffffff;
+            background-color: #AF40FF;
+            padding: 4px 35px;
+            border-radius: 15px;
+            margin: 10px 0px;
         }
 
         .l_msg {
@@ -211,6 +221,7 @@
             Rapid Coders
         </div>
         <div id="chat">
+            <div class="c_msg">04/02/23</div>
             <div class="l_msg">
                 <div class="left">hii</div><span>7:10 AM</span>
             </div>
@@ -275,6 +286,8 @@
                     document.getElementById("chat").innerHTML = " ";
                     let user = "";
                     for(const key in data_obj){
+                        document.getElementById("chat").innerHTML += `<div class="c_msg">${key}</div>`;
+                        
                         for(let i in data_obj[key]){
                             let temp = data_obj[key][i];
                             let time_split = temp.split(" - ");
