@@ -108,21 +108,24 @@
             flex-direction: column;
             overflow-x: hidden;
         }
-        .chat_head{
+
+        #chat_head {
             color: cyan;
             text-align: center;
             font-size: 25px;
             padding: 7px 10px;
             background-color: #191919;
         }
-        .chat{
+
+        #chat {
             display: flex;
             flex-direction: column;
             font-size: 20px;
             color: rgb(255, 255, 255);
             padding: 9px 8px;
         }
-        .l_msg{
+
+        .l_msg {
             max-width: 400px;
             align-self: flex-start;
             border-radius: 10px;
@@ -131,20 +134,24 @@
             background-color: rgb(49, 49, 49);
             display: flex;
         }
-        .left{
+
+        .left {
             width: fit-content;
             max-width: 350px;
             padding: 2px 5px 2px 5px;
             background-color: rgb(49, 49, 49);
+            word-break: break-all
         }
-        .l_msg>span{
+
+        .l_msg>span {
             position: relative;
             width: 50px;
             font-size: 12px;
             background-color: transparent;
             align-self: flex-end;
         }
-        .r_msg{
+
+        .r_msg {
             max-width: 400px;
             align-self: flex-end;
             border-radius: 10px;
@@ -154,13 +161,15 @@
             display: flex;
         }
 
-        .right{
+        .right {
             width: fit-content;
             max-width: 350px;
             padding: 2px 5px 2px 5px;
             background-color: rgb(78 7 163);
+            word-break: break-all
         }
-        .r_msg>span{
+
+        .r_msg>span {
             position: relative;
             width: 50px;
             font-size: 12px;
@@ -170,21 +179,20 @@
 
         @media only screen and (max-width:780px) {
             #mainhead {
-            font-size: 40px;
-        }
+                font-size: 40px;
+            }
         }
 
         @media only screen and (max-width:634px) {
             #mainhead {
-            font-size: 20px;
-        }
+                font-size: 20px;
+            }
 
-        #screen {
-            width: 300px;
-            ;
+            #screen {
+                width: 300px;
+                ;
+            }
         }
-        }
-
     </style>
 </head>
 
@@ -202,27 +210,99 @@
         <div class="chat_head">
             Elite Akshay
         </div>
-        <div class="chat">
-            <div class="l_msg"><div class="left">hii</div><span>7:10 AM</span></div>
-            <div class="r_msg"><div class="right">hello</div><span>7:10 AM</span></div>
-            <div class="r_msg"><div class="right">How are u</div><span>7:10 AM</span></div>
-            <div class="l_msg"><div class="left">I am</div><span>7:10 AM</span></div>
-            <div class="l_msg"><div class="left">fine</div><span>7:10 AM</span></div>
-            
+        <div id="chat">
+            <div class="l_msg">
+                <div class="left">hii</div><span>7:10 AM</span>
+            </div>
+            <div class="r_msg">
+                <div class="right">hello</div><span>7:10 AM</span>
+            </div>
+            <div class="r_msg">
+                <div class="right">How are u</div><span>7:10 AM</span>
+            </div>
+            <div class="l_msg">
+                <div class="left">I am</div><span>7:10 AM</span>
+            </div>
+            <div class="l_msg">
+                <div class="left">fine</div><span>7:10 AM</span>
+            </div>
+
         </div>
     </div>
     <script>
         function Beautify() {
-            // select file 
+            // open window to select window 
             document.getElementById("input_file").click();
+            // whenever new file is selected fun below code
+            document.getElementById("input_file").onchange = function () {
+                let file = document.getElementById("input_file").files[0];
+                // filter to check if file is txt
+                if(!(file.name.includes(".txt"))){
+                    confirm("This file is not a text file")
+                    return;
+                }
+                console.log(file.name)
+                // read content of file 
+                var file_reader = new FileReader();
+                file_reader.readAsText(file);
+                file_reader.onload = function () {
+                    let content = file_reader.result;
+                    let c_arr = content.split("\n");   
+                    if(c_arr[c_arr.length-1] == "") c_arr.pop();      
+                    // console.log(c_arr[2]);
+                    let data_obj = {};
+                    let date = "";
+                    // sort chats date wise 
+                    for(var i = 1;i<c_arr.length;++i){
+                        // if line is continuation of last line 
+                        // console.log(c_arr[i]);
+                        if(!(c_arr[i].includes(",") && c_arr[i].includes(":") && c_arr[i].includes("/"))){
+                            data_obj[date][data_obj[date].length-1] = data_obj[date][data_obj[date].length-1] + " " +(c_arr[i]);
+                            continue;
+                            // data_obj[date].push(c_arr[i].split(",")[1]);
+                        }
+                        let c_date = c_arr[i].split(",")[0];
+                        if(date != c_date){
+                            date = c_date;
+                            data_obj[date] = [];
+                            data_obj[date].push(c_arr[i].split(",")[1]);  
+                        }else{
+                            data_obj[date].push(c_arr[i].split(",")[1]);
+                        }
+                    }
+                    console.log(data_obj);
+                    // render chats in browser 
+                    document.getElementById("chat").innerHTML = " ";
+                    let user = "";
+                    for(const key in data_obj){
+                        for(let i in data_obj[key]){
+                            let temp = data_obj[key][i];
+                            let time_split = temp.split(" - ");
+                            let name_msg = time_split[1].split(": ");
+                            if(user == ""){
+                                user = name_msg[0];
+                            }
+                            if(user == name_msg[0]){
+                                // insert msg left 
+                                document.getElementById("chat").innerHTML += `
+                                <div class="l_msg">
+                                    <div class="left">${name_msg[1]}</div><span>${time_split[0]}</span>
+                                </div>
+                                `
+                            }else{
+                                // insert msg right 
+                                document.getElementById("chat").innerHTML += `
+                                <div class="r_msg">
+                                    <div class="right">${name_msg[1]}</div><span>${time_split[0]}</span>
+                                </div>
+                                `;
+                            }
 
-            // read file
-            let file = document.getElementById("input_file").files[0];
-            var file_reader = new FileReader();
-            file_reader.onload = function () {
-                console.log(file_reader.result);
+                        }
+                    }
+                }
             }
-            file_reader.readAsText(file);
+
         }
     </script>
 </body>
