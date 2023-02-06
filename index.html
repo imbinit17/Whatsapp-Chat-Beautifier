@@ -109,7 +109,7 @@
             overflow-x: hidden;
         }
 
-        #chat_head {
+        .chat_head {
             color: cyan;
             text-align: center;
             font-size: 25px;
@@ -208,7 +208,7 @@
     </div>
     <div id="screen">
         <div class="chat_head">
-            Elite Akshay
+            Rapid Coders
         </div>
         <div id="chat">
             <div class="l_msg">
@@ -281,6 +281,11 @@
                             let name_msg = time_split[1].split(": ");
                             if(user == ""){
                                 user = name_msg[0];
+                                document.getElementById("chat").innerHTML += `
+                                <div class="l_msg">
+                                    <div class="left">Hey ${user}, this side</div><span></span>
+                                </div>
+                                `
                             }
                             if(user == name_msg[0]){
                                 // insert msg left 
