@@ -126,7 +126,7 @@
             padding-top: 2px;
         }
 
-        .c_msg{
+        .c_msg {
             align-self: center;
             color: #ffffff;
             background-color: #AF40FF;
@@ -203,6 +203,93 @@
                 ;
             }
         }
+
+        /* loader  */
+        .loader {
+            display: none;
+            align-self: center;
+            margin: 50px 0px;
+            width: 150px;
+            height: 150px;
+            border-left: 5px solid #38ff8e;
+            border-radius: 50%;
+            -webkit-animation: right5231 0.9s linear infinite;
+            animation: right5231 0.9s linear infinite;
+        }
+
+        .loader::before,
+        .loader::after {
+            content: "";
+            width: 120px;
+            height: 120px;
+            display: block;
+            position: absolute;
+            top: calc(50% - 60px);
+            left: calc(50% - 60px);
+            border-right: 5px solid #ffbe0b;
+            border-radius: 50%;
+            -webkit-animation: left036 0.9s linear infinite;
+            animation: left036 0.9s linear infinite;
+        }
+
+        .loader::after {
+            width: 90px;
+            height: 90px;
+            top: calc(50% - 45px);
+            left: calc(50% - 45px);
+            border: 0;
+            border-top: 5px solid #ff086e;
+            -webkit-animation: none;
+            animation: none;
+        }
+
+        @-webkit-keyframes right5231 {
+            from {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes right5231 {
+            from {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes left036 {
+            from {
+                -webkit-transform: rotate(720deg);
+                transform: rotate(720deg);
+            }
+
+            to {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes left036 {
+            from {
+                -webkit-transform: rotate(720deg);
+                transform: rotate(720deg);
+            }
+
+            to {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+        }
     </style>
 </head>
 
@@ -220,6 +307,9 @@
         <div class="chat_head">
             Rapid Coders
         </div>
+        <!-- loader -->
+        <div class="loader"></div>
+        <!-- loader end  -->
         <div id="chat">
             <div class="c_msg">04/02/23</div>
             <div class="l_msg">
@@ -240,6 +330,8 @@
 
         </div>
     </div>
+
+
     <script>
         function Beautify() {
             // open window to select window 
@@ -248,51 +340,54 @@
             document.getElementById("input_file").onchange = function () {
                 let file = document.getElementById("input_file").files[0];
                 // filter to check if file is txt
-                if(!(file.name.includes(".txt"))){
+                if (!(file.name.includes(".txt"))) {
                     confirm("This file is not a text file")
                     return;
                 }
+                // show loader and hide chats
+                document.getElementsByClassName("loader")[0].style = "display: block";
+                document.getElementById("chat").innerHTML = " ";
+
                 console.log(file.name)
                 // read content of file 
                 var file_reader = new FileReader();
                 file_reader.readAsText(file);
                 file_reader.onload = function () {
                     let content = file_reader.result;
-                    let c_arr = content.split("\n");   
-                    if(c_arr[c_arr.length-1] == "") c_arr.pop();      
+                    let c_arr = content.split("\n");
+                    if (c_arr[c_arr.length - 1] == "") c_arr.pop();
                     // console.log(c_arr[2]);
                     let data_obj = {};
                     let date = "";
                     // sort chats date wise 
-                    for(var i = 1;i<c_arr.length;++i){
+                    for (var i = 1; i < c_arr.length; ++i) {
                         // if line is continuation of last line 
                         // console.log(c_arr[i]);
-                        if(!(c_arr[i].includes(",") && c_arr[i].includes(":") && c_arr[i].includes("/"))){
-                            data_obj[date][data_obj[date].length-1] = data_obj[date][data_obj[date].length-1] + " " +(c_arr[i]);
+                        if (!(c_arr[i].includes(",") && c_arr[i].includes(":") && c_arr[i].includes("/"))) {
+                            data_obj[date][data_obj[date].length - 1] = data_obj[date][data_obj[date].length - 1] + " " + (c_arr[i]);
                             continue;
                             // data_obj[date].push(c_arr[i].split(",")[1]);
                         }
                         let c_date = c_arr[i].split(",")[0];
-                        if(date != c_date){
+                        if (date != c_date) {
                             date = c_date;
                             data_obj[date] = [];
-                            data_obj[date].push(c_arr[i].split(",")[1]);  
-                        }else{
+                            data_obj[date].push(c_arr[i].split(",")[1]);
+                        } else {
                             data_obj[date].push(c_arr[i].split(",")[1]);
                         }
                     }
                     console.log(data_obj);
                     // render chats in browser 
-                    document.getElementById("chat").innerHTML = " ";
                     let user = "";
-                    for(const key in data_obj){
+                    for (const key in data_obj) {
                         document.getElementById("chat").innerHTML += `<div class="c_msg">${key}</div>`;
-                        
-                        for(let i in data_obj[key]){
+
+                        for (let i in data_obj[key]) {
                             let temp = data_obj[key][i];
                             let time_split = temp.split(" - ");
                             let name_msg = time_split[1].split(": ");
-                            if(user == ""){
+                            if (user == "") {
                                 user = name_msg[0];
                                 document.getElementById("chat").innerHTML += `
                                 <div class="l_msg">
@@ -300,14 +395,14 @@
                                 </div>
                                 `
                             }
-                            if(user == name_msg[0]){
+                            if (user == name_msg[0]) {
                                 // insert msg left 
                                 document.getElementById("chat").innerHTML += `
                                 <div class="l_msg">
                                     <div class="left">${name_msg[1]}</div><span>${time_split[0]}</span>
                                 </div>
                                 `
-                            }else{
+                            } else {
                                 // insert msg right 
                                 document.getElementById("chat").innerHTML += `
                                 <div class="r_msg">
@@ -318,6 +413,9 @@
 
                         }
                     }
+                    // hide loader
+                    document.getElementsByClassName("loader")[0].style = "display: none";
+
                 }
             }
 
