@@ -366,7 +366,7 @@
                 // read content of file 
                 var file_reader = new FileReader();
                 file_reader.readAsText(file);
-                file_reader.onload = function () {
+                file_reader.onload = async function () {
                     let content = file_reader.result;
                     let c_arr = content.split("\n");
                     if (c_arr[c_arr.length - 1] == "") c_arr.pop();
@@ -398,9 +398,13 @@
                         document.getElementById("chat").innerHTML += `<div class="c_msg">${key}</div>`;
 
                         for (let i in data_obj[key]) {
+                            try{
                             let temp = data_obj[key][i];
                             let time_split = temp.split(" - ");
                             let name_msg = time_split[1].split(": ");
+                            if(name_msg[1].includes("<Media omitted>")){
+                                name_msg[1] = "{Media omitted}";
+                            }
                             if (user == "") {
                                 user = name_msg[0];
                                 document.getElementById("chat").innerHTML += `
@@ -424,16 +428,26 @@
                                 </div>
                                 `;
                             }
+                        }catch(err){
+                            console.log(data_obj[key][i]);
+                            console.log(err.message);
+                        }
 
                         }
+                        await sleep(100);
                     }
                     // hide loader
                     document.getElementsByClassName("loader")[0].style = "display: none";
 
                 }
             }
-
         }
+
+        function sleep(ms) {
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+}
     </script>
 </body>
 
