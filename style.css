@@ -3,6 +3,7 @@
     padding: 0px 0px;
     box-sizing: border-box;
     background-color: black;
+    font-family: monospace;
 }
 
 #input_container {
@@ -127,6 +128,20 @@
     margin: 10px 0px;
 }
 
+.left-msg{
+    display: flex;
+    padding: 0 0 0 10px;
+
+}
+
+.profile-pic img{
+    margin-right: 10px;
+    height: 37px;
+    width: auto;
+    border-radius: 50px;
+}
+
+
 .l_msg {
     max-width: 400px;
     align-self: flex-start;
@@ -134,8 +149,14 @@
     padding: 5px 5px 5px 5px;
     margin-bottom: 6px;
     background-color: rgb(49, 49, 49);
-    display: flex;
+    display: block;
 }
+
+.upper-section{
+    color: #e2c311;
+    font-size: larger;
+}
+
 
 .left {
     width: fit-content;
@@ -159,7 +180,7 @@
     border-radius: 10px;
     padding: 5px 5px 5px 5px;
     margin-bottom: 6px;
-    background-color: rgb(78 7 163);
+    background-color: rgb(31 179 75);
     display: flex;
 }
 
@@ -167,7 +188,7 @@
     width: fit-content;
     max-width: 350px;
     padding: 2px 5px 2px 5px;
-    background-color: rgb(78 7 163);
+    background-color: rgb(31 179 75);
     overflow-x: auto;
 }
 

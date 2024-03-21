@@ -1,7 +1,12 @@
 function Beautify() {
     // open window to select window 
     document.getElementById("input_file").click();
-    // whenever new file is selected fun below code
+
+    //get you_name
+    let you_name = prompt("Enter the name of the user to be in the right")
+    alert("Name entered (Case sensitive) :"+you_name)
+    
+    // whenever new file is selected run below code
     document.getElementById("input_file").onchange = function () {
         let file = document.getElementById("input_file").files[0];
         // filter to check if file is txt
@@ -12,6 +17,10 @@ function Beautify() {
         // show loader and hide chats
         document.getElementsByClassName("loader")[0].style = "display: block";
         document.getElementById("chat").innerHTML = " ";
+        document.getElementById("input_container").style = "display:none ";
+        // document.getElementById("chat_head").innerHTML = " ";
+        // document.getElementById("input_file").style="display:none" ;
+        
 
         console.log(file.name)
         // read content of file 
@@ -56,22 +65,33 @@ function Beautify() {
                     if(name_msg[1].includes("<Media omitted>")){
                         name_msg[1] = "{Media omitted}";
                     }
-                    if (user == "") {
-                        user = name_msg[0];
-                        document.getElementById("chat").innerHTML += `
-                        <div class="l_msg">
-                            <div class="left">Hey ${user}, this side</div><span></span>
-                        </div>
-                        `
-                    }
-                    if (user == name_msg[0]) {
+                    // if (user == "") {
+                    //     user = name_msg[0];
+                    //     document.getElementById("chat").innerHTML += `
+                    //     <div class="l_msg">
+                    //         <div class="left">Hey ${user}, this side</div><span></span>
+                    //     </div>
+                    //     `
+                    // }
+                    if (name_msg[0]!=you_name) {
                         // insert msg left 
+
                         document.getElementById("chat").innerHTML += `
-                        <div class="l_msg">
-                            <div class="left">${name_msg[1]}</div><span>${time_split[0]}</span>
+                        <div class="left-msg">
+                            <div class="profile-pic"><img src="${name_msg[0]}.jpg" onerror="this.src='default.jpg'" alt="profile pic"></div>
+                                <div class="l_msg">
+                                    <div class="upper-section">${name_msg[0]}</div>
+                                        <div class="left">
+                                        ${name_msg[1]}
+                                        </div>
+                                   <span>${time_split[0]}</span>
+                            </div>
                         </div>
                         `
-                    } else {
+                        // colorname = getCorrespondingColor(name_msg[0])
+                        // document.getElementsByClassName("upper-section").style=`color: ${colorname}`;
+
+                    } else if(name_msg[0]==you_name) {
                         // insert msg right 
                         document.getElementById("chat").innerHTML += `
                         <div class="r_msg">
