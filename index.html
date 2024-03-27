@@ -14,10 +14,16 @@
         <h1 id="mainhead">
             Whatsapp Chat Beautifier
         </h1>
+        <input type="file" id="input_media" multiple>
+        <button id="submit_btn" onclick="processMedia()">
+            <span class="text">Select media</span>
+        </button>
+
         <input type="file" accept=".txt" id="input_file">
         <button id="submit_btn" onclick="Beautify()">
             <span class="text">Select Chat File</span>
         </button>
+
     </div>
     <div id="screen">
         <div class="chat_head">
@@ -27,7 +33,7 @@
             <div class="c_msg">12/06/25</div>
 
             <div class="left-msg">
-                <div class="profile-pic"><img src="/img.jpg" alt=""></div>
+                <div class="profile-pic"><img src="/default.jpg" alt=""></div>
                 <div class="l_msg">
                     <div class="upper-section">Name</div>
                     <div class="left">

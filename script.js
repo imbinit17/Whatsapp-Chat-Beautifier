@@ -1,3 +1,48 @@
+let media = {
+    'default': 'default.jpg'
+};
+
+function getCorrespondingProfilePic(name){
+    if(name in media){
+        return media[name];
+    }
+    else{
+        return 'default.jpg';
+    }
+}
+       
+function processMedia(){
+    document.getElementById("input_media").click();
+
+    document.getElementById("input_media").onchange = function () {
+        let files = document.getElementById("input_media").files;
+        let promises = [];
+
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let reader = new FileReader();
+
+            let promise = new Promise((resolve, reject) => {
+                reader.onloadend = function () {
+                    let base64data = reader.result;                
+                    let name = file.name.split(".")[0] ;
+                    media[name] = base64data;
+                    resolve();
+                }
+                reader.onerror = reject;
+            });
+
+            reader.readAsDataURL(file);
+            promises.push(promise);
+        }
+
+        Promise.all(promises)
+            .then(() => console.log('All files have been processed'))
+            .catch((err) => console.error('An error occurred', err));
+    }
+}
+
+
 function Beautify() {
     // open window to select window 
     document.getElementById("input_file").click();
@@ -65,40 +110,120 @@ function Beautify() {
                     if(name_msg[1].includes("<Media omitted>")){
                         name_msg[1] = "{Media omitted}";
                     }
-                    // if (user == "") {
-                    //     user = name_msg[0];
-                    //     document.getElementById("chat").innerHTML += `
-                    //     <div class="l_msg">
-                    //         <div class="left">Hey ${user}, this side</div><span></span>
-                    //     </div>
-                    //     `
-                    // }
-                    if (name_msg[0]!=you_name) {
+                    
+                    if (name_msg[0]!=you_name) 
+                    {
                         // insert msg left 
 
-                        document.getElementById("chat").innerHTML += `
-                        <div class="left-msg">
-                            <div class="profile-pic"><img src="${name_msg[0]}.jpg" onerror="this.src='default.jpg'" alt="profile pic"></div>
+                        image_src = getCorrespondingProfilePic(name_msg[0]);
+
+                        if(name_msg[1].includes("(file attached)"))
+                        {
+                            let file = name_msg[1].split(" (file attached)")[0];
+                            let file_name = file.split(".")[0];
+                            let file_extension = file.split(".")[1];
+                            let msg = name_msg[1].split(" (file attached)")[2];
+
+                            if(msg==undefined)
+                            msg = ' '
+
+                            if(file_extension=='jpg' || file_extension=='jpeg' || file_extension=='png' || file_extension=='gif'){
+                                document.getElementById("chat").innerHTML += `
                                 <div class="l_msg">
-                                    <div class="upper-section">${name_msg[0]}</div>
-                                        <div class="left">
-                                        ${name_msg[1]}
-                                        </div>
-                                   <span>${time_split[0]}</span>
+                                ${msg}
+                                    <div class="media"><img src=${media[file_name]} alt="media"></div>
+                                </div>
+                                `;
+                            }
+                            else if(file_extension=='mp4') {
+                                document.getElementById("chat").innerHTML += `
+                                <div class="l_msg">
+                                ${msg}
+                                    <div class="media"><video src=${media[file_name]} controls></video></div>
+                                </div>
+                                `;
+                            }
+                            else if(file_extension=='pdf') {
+                                document.getElementById("chat").innerHTML += `
+                                <div class="l_msg">
+                                <img src='pdf.png' alt='PDF'>
+                                ${msg}
+                                    <div class="media"><a href=${media[file_name]} target="_blank">Open PDF :${file_name}</a></div>
+                                </div>
+                                `;
+                            }
+                        }
+
+                        else{
+                            document.getElementById("chat").innerHTML += `
+                            <div class="left-msg">
+                                <div class="profile-pic"><img src=${image_src} alt="profile pic"></div>
+                                    <div class="l_msg">
+                                        <div class="upper-section">${name_msg[0]}</div>
+                                            <div class="left">
+                                            ${name_msg[1]}
+                                            </div>
+                                       <span>${time_split[0]}</span>
+                                </div>
                             </div>
-                        </div>
-                        `
+                            `
+                        }
+
                         // colorname = getCorrespondingColor(name_msg[0])
                         // document.getElementsByClassName("upper-section").style=`color: ${colorname}`;
-
-                    } else if(name_msg[0]==you_name) {
-                        // insert msg right 
-                        document.getElementById("chat").innerHTML += `
-                        <div class="r_msg">
-                            <div class="right">${name_msg[1]}</div><span>${time_split[0]}</span>
-                        </div>
-                        `;
                     }
+
+                   
+                    
+                    else if(name_msg[0]==you_name) 
+                    {
+                        // insert msg right 
+
+                        if(name_msg[1].includes("(file attached)"))
+                        {
+                            let file = name_msg[1].split(" (file attached)")[0];
+                            let file_name = file.split(".")[0];
+                            let file_extension = file.split(".")[1];
+                            let msg = name_msg[1].split(" (file attached)")[2];
+
+                            if(msg==undefined)
+                            msg = ' '
+
+                            if(file_extension=='jpg' || file_extension=='jpeg' || file_extension=='png' || file_extension=='gif'){
+                                document.getElementById("chat").innerHTML += `
+                                <div class="r_msg">
+                                ${msg}
+                                    <div class="media"><img src=${media[file_name]} alt="media"></div>
+                                </div>
+                                `;
+                            }
+                            else if(file_extension=='mp4') {
+                                document.getElementById("chat").innerHTML += `
+                                <div class="r_msg">
+                                ${msg}
+                                    <div class="media"><video src=${media[file_name]} controls></video></div>
+                                </div>
+                                `;
+                            }
+                            else if(file_extension=='pdf') {
+                                document.getElementById("chat").innerHTML += `
+                                <div class="r_msg">
+                                ${msg}
+                                <img src='pdf.png' alt='PDF'>
+                                    <div class="media"><a href=${media[file_name]} target="_blank">Open PDF :${file_name}</a></div>
+                                </div>
+                                `;
+                            }
+                        }
+                        else{
+                                document.getElementById("chat").innerHTML += `
+                                <div class="r_msg">
+                                    <div class="right">${name_msg[1]}</div><span>${time_split[0]}</span>
+                                </div>
+                                `;
+                        }
+                    }
+                    
                 }catch(err){
                     console.log(data_obj[key][i]);
                     console.log(err.message);
