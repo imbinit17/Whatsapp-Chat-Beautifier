@@ -99,8 +99,15 @@ function Beautify() {
             console.log(data_obj);
             // render chats in browser 
             let user = "";
+
+            let chatDiv = document.getElementById('chat');
+
             for (const key in data_obj) {
-                document.getElementById("chat").innerHTML += `<div class="c_msg">${key}</div>`;
+
+                let newElement = document.createElement('div');
+                newElement.className = "c_msg";
+                newElement.innerHTML = `${key}` ;
+                chatDiv.append(newElement);
 
                 for (let i in data_obj[key]) {
                     try{
@@ -128,35 +135,39 @@ function Beautify() {
                             msg = ' '
 
                             if(file_extension=='jpg' || file_extension=='jpeg' || file_extension=='png' || file_extension=='gif'){
-                                document.getElementById("chat").innerHTML += `
-                                <div class="l_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "l_msg";
+                                newElement.innerHTML = `
                                 ${msg}
                                     <div class="media"><img src=${media[file_name]} alt="media"></div>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                             }
                             else if(file_extension=='mp4') {
-                                document.getElementById("chat").innerHTML += `
-                                <div class="l_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "l_msg";
+                                newElement.innerHTML = `
                                 ${msg}
                                     <div class="media"><video src=${media[file_name]} controls></video></div>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                             }
                             else if(file_extension=='pdf') {
-                                document.getElementById("chat").innerHTML += `
-                                <div class="l_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "l_msg";
+                                newElement.innerHTML = `
                                 <img src='pdf.png' alt='PDF'>
                                 ${msg}
                                     <div class="media"><a href=${media[file_name]} target="_blank">Open PDF :${file_name}</a></div>
-                                </div>
-                                `;
+                                `
+                                chatDiv.append(newElement);
                             }
                         }
 
                         else{
-                            document.getElementById("chat").innerHTML += `
-                            <div class="left-msg">
+                            let newElement = document.createElement('div');
+                            newElement.className = "left-msg";
+                            newElement.innerHTML = `
                                 <div class="profile-pic"><img src=${image_src} alt="profile pic"></div>
                                     <div class="l_msg">
                                         <div class="upper-section">${name_msg[0]}</div>
@@ -165,8 +176,8 @@ function Beautify() {
                                             </div>
                                        <span>${time_split[0]}</span>
                                 </div>
-                            </div>
-                            `
+                            ` ;
+                            chatDiv.append(newElement);
                         }
 
                         // colorname = getCorrespondingColor(name_msg[0])
@@ -190,37 +201,41 @@ function Beautify() {
                             msg = ' '
 
                             if(file_extension=='jpg' || file_extension=='jpeg' || file_extension=='png' || file_extension=='gif'){
-                                document.getElementById("chat").innerHTML += `
-                                <div class="r_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "r_msg";
+                                newElement.innerHTML = `
                                 ${msg}
                                     <div class="media"><img src=${media[file_name]} alt="media"></div>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                             }
                             else if(file_extension=='mp4') {
-                                document.getElementById("chat").innerHTML += `
-                                <div class="r_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "r_msg";
+                                newElement.innerHTML = `
                                 ${msg}
                                     <div class="media"><video src=${media[file_name]} controls></video></div>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                             }
                             else if(file_extension=='pdf') {
-                                document.getElementById("chat").innerHTML += `
-                                <div class="r_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "r_msg";
+                                newElement.innerHTML = `
                                 ${msg}
                                 <img src='pdf.png' alt='PDF'>
                                     <div class="media"><a href=${media[file_name]} target="_blank">Open PDF :${file_name}</a></div>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                             }
                         }
                         else{
-                                document.getElementById("chat").innerHTML += `
-                                <div class="r_msg">
+                                let newElement = document.createElement('div');
+                                newElement.className = "r_msg";
+                                newElement.innerHTML = `
                                     <div class="right">${name_msg[1]}</div><span>${time_split[0]}</span>
-                                </div>
                                 `;
+                                chatDiv.append(newElement);
                         }
                     }
                     
