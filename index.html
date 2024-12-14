@@ -29,12 +29,14 @@
         <h1 id="mainhead">
             Whatsapp Chat Beautifier
         </h1>
-        <input type="file" id="input_media" multiple>
+
+        <input type="text" id="nameOnRight" placeholder="Enter Name to be on Right Side" >
+        <input type="file" id="input_media" multiple style="display:none">
         <button id="submit_btn" onclick="processMedia()">
             <span class="text">Select media</span>
         </button>
 
-        <input type="file" accept=".txt" id="input_file">
+        <input type="file" accept=".txt" id="input_file" style="display:none">
         <button id="submit_btn" onclick="Beautify()">
             <span class="text">Select Chat File</span>
         </button>
@@ -84,12 +86,12 @@
                 </div>
             </div>
             
-            <div class="r_msg">
+            <!-- <div class="r_msg">
                 <div class="right">hello</div><span>11:10 AM</span>
             </div>
             <div class="r_msg">
                 <div class="right">What you can do?</div><span>11:11 AM</span>
-            </div>
+            </div> -->
 
             <div class="left-msg">
                 <div class="profile-pic"><img src="/default.jpg" alt=""></div>
@@ -104,8 +106,7 @@
                 <div class="profile-pic"><img src="/default.jpg" alt=""></div>
                 <div class="l_msg">
                     <div class="upper-section">Your Friend</div>
-                    <div class="left">I am created by Elite Akshay and I am created to Beautify personal chats and not group
-                        chats.</div><span>11:12 AM</span>
+                    <div class="left">I am created by Elite Akshay and modified by imbinit17 . I am created to Beautify your whatsapp chats .</div><span>11:12 AM</span>
                 </div>
             </div>
             

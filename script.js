@@ -101,8 +101,7 @@ function Beautify() {
     document.getElementById("input_file").click();
 
     //get you_name
-    let you_name = prompt("Enter the name of the user to be in the right")
-    alert("Name entered (Case sensitive) :"+you_name)
+    let you_name = document.getElementById("nameOnRight").value ;
     
     // whenever new file is selected run below code
     document.getElementById("input_file").onchange = function () {
@@ -188,6 +187,7 @@ function Beautify() {
                     let date_time_info = `${key} ${time_split[0]}`;
                     
                     let name_msg = time_split[1].split(": ");
+
                     if(name_msg[1].includes("<Media omitted>")){
                         name_msg[1] = "{Media omitted}";
                     }
